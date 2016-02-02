@@ -7,5 +7,11 @@
 <body>
 	<h1><%= title %></h1>
 	<p>Welcome to <%= title %></p>
+	<form action="/upload" method="post" , enctype="multipart/form-data">
+		<input type="text" name="category"/>
+		<input type="file" name="uploaddata" multiple=""/>
+		<input type="submit" name="Upload" />
+	</form>
+
 </body>
 </html>

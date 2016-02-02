@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>/Users/MAC_Portars/Documents/workspace/balsa/.README.md.html</title>
+<title>/Users/MAC_Portars/git/SERVER/balsa/.README.md.html</title>
 
 
 <style type="text/css">
@@ -642,16 +642,57 @@ function setDocumentScrollTop(ypos)
 <h1> <a id="user-content-balsa" class="anchor" href="#balsa" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>balsa</h1> 
 <h2> <a id="user-content-table-of-contents" class="anchor" href="#table-of-contents" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table of Contents</h2> 
 <ul> 
+ <li><a href="#Fileupload">Fileupload</a></li> 
  <li><a href="#company">회사정보</a></li> 
 </ul> 
+<h2> <a id="user-content-fileupload" class="anchor" href="#fileupload" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>FileUpload</h2> 
+<p>매개변수 uploaddata, category</p> 
+<p>url</p> 
+<pre><code>url: /upload
+</code></pre> 
+<p>파일은 n개 동시 업로드 가능.</p> 
+<p>리스폰스 값 :</p> 
+<pre><code>{
+    &quot;error&quot; : null,
+    &quot;data&quot; : [ {
+        &quot;file_uuid&quot; : &quot;af1cd51b-3e2f-4aa6-ada6-91d024fd4932&quot;,
+        &quot;file_category&quot; : &quot;test&quot;,
+        &quot;file_name&quot; : &quot;rocketdan.sql&quot;
+    } ]
+}
+</code></pre> 
 <h2> <a id="user-content-company" class="anchor" href="#company" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>company</h2> 
-<p>회사정보 받아오기</p> 
+<h4> <a id="user-content-회사정보-받아오기" class="anchor" href="#%ED%9A%8C%EC%82%AC%EC%A0%95%EB%B3%B4-%EB%B0%9B%EC%95%84%EC%98%A4%EA%B8%B0" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>회사정보 받아오기</h4> 
 <pre><code>url: /company_info_list
 </code></pre> 
 <p>회사아이디 이용하여 다일 항목 받아오기.</p> 
 <p>매개변수 이름은 id.</p> 
 <p>값은 company_info 테이블의 seq_id 값.</p> 
 <pre><code>url: /company_info_list?id=?
+</code></pre> 
+<h4> <a id="user-content-회사정보-update" class="anchor" href="#%ED%9A%8C%EC%82%AC%EC%A0%95%EB%B3%B4-update" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>회사정보 update</h4> 
+<p>파라미터 </p> 
+<p>id =&gt; update 하고 싶은 seq_id 값 </p> 
+<p>ceo_name,company_num,company2_num,</p> 
+<p>tour_num,sub_num,type,sub_type,company_reg_date,</p> 
+<p>tel_num,tel2_num,fax_num,fax2_num,post_address,</p> 
+<p>adress,work_location</p> 
+<p>각 항목을 제외시 널값으로 적용됨.</p> 
+<pre><code>url: /company_info_list/update
+</code></pre> 
+<h4> <a id="user-content-회사정보-delete" class="anchor" href="#%ED%9A%8C%EC%82%AC%EC%A0%95%EB%B3%B4-delete" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>회사정보 delete</h4> 
+<p>파라미터</p> 
+<p>id =&gt; 삭제하고 싶은 seq_id 값 </p> 
+<pre><code>url: /company_info_list/delete
+</code></pre> 
+<h4> <a id="user-content-회사정보-insert" class="anchor" href="#%ED%9A%8C%EC%82%AC%EC%A0%95%EB%B3%B4-insert" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>회사정보 insert</h4> 
+<p>파라미터 </p> 
+<p>company_name,ceo_name,company_num,company2_num,</p> 
+<p>tour_num,sub_num,type,sub_type,company_reg_date,</p> 
+<p>tel_num,tel2_num,fax_num,fax2_num,post_address,</p> 
+<p>adress,work_location</p> 
+<p>각 항목을 제외시 널값으로 적용됨.</p> 
+<pre><code>url: /company_info_list/insert
 </code></pre> 
 <h2> <a id="user-content-developing" class="anchor" href="#developing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Developing</h2> 
 <h3> <a id="user-content-tools" class="anchor" href="#tools" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tools</h3> 
