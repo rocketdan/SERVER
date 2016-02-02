@@ -1,0 +1,221 @@
+body,ul,li,div,section,header,footer,nav,aside,p{padding: 0px; margin :0px;}
+
+li {
+	list-style: none;
+}
+
+button {
+    overflow: visible;
+    text-transform: none;
+    -webkit-appearance: button;
+}
+
+.wrapper {
+	margin:0px auto;
+}
+
+.header {
+	overflow: auto;
+	background-color: #3e464c;
+	color: #fff;
+	font-family : Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	text-transform: uppercase;
+}
+
+.header > section , .header > nav {
+	margin:10px;
+	padding:10px;
+}
+
+.header > section {
+	float: left;
+	font-family: monospace;
+    font-weight: 200;
+    font-size: 1.5em;
+}
+
+.header > nav {
+	float: right;
+}
+
+header.header li {
+    display: inline-block;
+    border: 1px solid #ACB1AD;
+    padding: 7px;
+}
+
+ul.mainMenu {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content : center;
+	width: 90%;
+    margin: 20px auto;
+}
+
+.mainMenu li {
+    background: #374046;
+    margin: 5px;
+    padding: 5px;
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    color: #fff;
+    font-size: 1em;
+    text-align: center;
+}
+
+.contentWrap {
+	width: 80%;
+    margin: 0px auto;
+}
+
+.contentWrap section {
+    border: 3px solid #3E464C;
+    1background-color:  rgba(68,72,74,0.02);
+    height: auto;
+    margin-bottom: 20px;
+    overflow: auto;
+}
+
+ul.inputWrap {
+	height: auto;
+	width : 90%;
+	margin : 0px auto;
+}
+
+.inputWrap {
+}
+
+li.row {
+	display: block;
+	width : 100%;
+	overflow :auto;
+	border-bottom: 1px solid #DCDCDC;
+}
+
+li.row:last-child {
+    border: 0px;
+}
+
+.nameArea, .inputArea {
+	height : 65px;
+	float: left;
+    line-height: 65px;
+}
+
+.nameArea {
+    width: 25%;
+    box-sizing: border-box;
+    1padding-left: 10px;
+}
+
+.inputArea {
+    width: 75%;
+}
+
+.inputField {
+	width: 80%; 
+    height: 25px;
+    font-size: 1em;
+    border : none;
+    outline: none;
+    cursor:auto;
+    -webkit-appearance: none;
+    border: 1px solid #ccc;
+    padding-left: 5px;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+}
+
+li.row-left , li.row-right{
+    float: left;
+    width: 50%;
+}
+
+li.full .nameArea {
+    width : 12.5%;
+}
+
+li.gubun .inputArea {
+   width: 37.5%;
+}
+
+.imageUpload .nameArea, .imageUpload .inputArea{
+    height : 200px;
+}
+
+.imageUpload img {
+}
+
+.imageUpload .nameArea{
+    line-height: 200px;
+}
+
+.imageUpload .inputArea {
+    line-height: 0px;
+}
+
+.imageUp, .imageUpButton{
+    float: left;
+    padding-top: 20px;
+}
+
+.imageUp {
+    width: 25%;
+}
+
+.imageUpButton {
+    line-height: 0px;
+}
+
+.contentWrap .companyAccount {
+    height : 400px;
+}
+
+.companyAccount {
+    padding: 3% 1%;
+}
+
+.companyAccount > div{
+    float:left;
+    border : 1px solid grey;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+}
+
+.companyAccount > .accoutName {
+    width  : 20%;
+    margin-left: 2%;
+    border-right: 0;
+}
+
+.accountTable {
+    width  : 75%;
+}
+
+.accountTable .tableName {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content : center;
+    1margin: 20px auto;
+    height: 40px;
+    line-height: 40px;
+    background: rgba(55, 64, 70, 0.44);
+    color:#fff;
+}
+
+.accountTable .tableName > div {
+    flex: 1 auto; 
+}
+
+
+
