@@ -142,7 +142,7 @@ router.get('/company_info_list/delete', function(req, res, next) {
 	var id = req.param("id");
 	if (id != undefined && id.trim() != "") {
 		data.connect();
-		data.selectQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change) {
+		data.deleteQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change) {
 			var result = {
 				data : [],
 				error : null,

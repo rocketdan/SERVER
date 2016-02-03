@@ -1,10 +1,11 @@
 
 
-# balsa
+# Balsa
 
 ## Table of Contents
 - [Fileupload](#Fileupload)
 - [회사정보](#company)
+- [account](#account)
 
 ## FileUpload
 매개변수 uploaddata, category
@@ -90,6 +91,58 @@ adress,work_location
 
 ```
 url: /company_info_list/insert
+```
+
+## account
+####계좌정보 받아오기
+```
+url: /account/list
+```
+회사아이디 이용하여 다일 항목 받아오기.
+
+매개변수 이름은 id.
+
+값은 company_account 테이블의 seq_id 값.
+```
+url: /account/list?id=?
+```
+
+####계좌정보 update
+
+파라미터 
+
+id => update 하고 싶은 seq_id 값 
+
+
+company_id,bank_name,account_num,account_auth,note
+
+각 항목을 제외시 널값으로 적용됨.
+
+
+```
+url: /account/update
+```
+
+####계좌정보 delete
+
+파라미터
+
+id => 삭제하고 싶은 seq_id 값 
+
+```
+url: /account/delete
+```
+
+####계좌정보 insert
+
+파라미터 
+
+company_id,bank_name,account_num,account_auth,note
+
+각 항목을 제외시 널값으로 적용됨.
+
+```
+url: /account/insert
 ```
 
 
