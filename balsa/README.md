@@ -140,6 +140,7 @@ url: /account/delete
 company_id,bank_name,account_num,account_auth,note
 
 각 항목을 제외시 널값으로 적용됨.
+- company_id 는 company_info의 seq_id 값 입니다.
 
 ```
 url: /account/insert
