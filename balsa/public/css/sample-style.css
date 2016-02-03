@@ -10,11 +10,33 @@ button {
     -webkit-appearance: button;
 }
 
+/* overwrite by semantic-ui START */
+.ui.form .fields {
+    margin-top: 30px;
+}
+table.ui.fixed.single.line.celled.table  {
+    margin-top: 40px;
+}
+
+table.ui.fixed.single.line.celled.table td:last-child {
+    text-align: center;
+}
+
+h4.ui.header {
+    margin-top: 60px;
+}
+
+#accountInfo tbody tr:first-child button.minus {
+    display : none;
+}
+/* overwrite by semantic-ui END */
+
+
 .wrapper {
 	margin:0px auto;
 }
 
-.header {
+header.header {
 	overflow: auto;
 	background-color: #3e464c;
 	color: #fff;
@@ -22,19 +44,19 @@ button {
 	text-transform: uppercase;
 }
 
-.header > section , .header > nav {
-	margin:10px;
+header.header > section , header.header > nav {
+	margin:4;
 	padding:10px;
+    font-size: 0.8em;
 }
 
-.header > section {
+header.header > section {
 	float: left;
 	font-family: monospace;
     font-weight: 200;
-    font-size: 1.5em;
 }
 
-.header > nav {
+header.header > nav {
 	float: right;
 }
 
@@ -68,9 +90,19 @@ ul.mainMenu {
     text-align: center;
 }
 
-.contentWrap {
+
+.menuWrap, .contentWrap {
 	width: 80%;
-    margin: 0px auto;
+    margin: 40px auto;
+}
+
+.lineGubun {
+    width:100%;
+    border:1px solid #929090;
+}
+
+.contentWrap {
+    margin-top: 60px;
 }
 
 .contentWrap section {
@@ -215,6 +247,15 @@ li.gubun .inputArea {
 
 .accountTable .tableName > div {
     flex: 1 auto; 
+}
+
+.ui.footer.segment {
+    margin: 5em 0em 0em;
+    padding: 5em 0em;
+}
+
+button.imageUpload.ui.button {
+    margin-top: 20px;
 }
 
 

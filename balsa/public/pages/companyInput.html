@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="ground-gulp sample page">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ROCKETDAN ERP</title>
+        <link rel="stylesheet" type="text/css" href="/lib/semantic/css/semantic.min.css">
+        <link rel="stylesheet" href="../css/sample-style.css">
+    </head>
+    <body>
+
+      <div class="wrapper">
+        <div class="ui large top inverted menu visible">
+          <div class="ui container">
+            <a class="active item">
+              Home
+            </a>
+            <a class="item">
+              Messages
+            </a>
+            <a class="item">
+              Friends
+            </a>
+            <div class="right menu">
+              <a class="item">
+               login 
+             </a>
+           </div>
+         </div>
+       </div>
+
+       <div class="menuWrap">
+        <div class="ui grey six item menu">
+          <a class="item"> 대쉬보드 </a>
+          <a class="item active"> 예약관리 </a>
+          <a class="item"> 환경설정 </a>
+          <a class="item"> 회계관리 </a>
+          <a class="item"> 고객관리 </a>
+          <a class="item"> 고객관리 </a>
+        </div>
+      </div>
+
+      <div class="lineGubun"></div>
+
+      <div class="contentWrap">
+        <div class="companyInfoWrap">
+          <form id="companyForm"  class="ui form" action="" method="post">
+           <h4 class="ui dividing header">기본정보</h4>
+           <div class="four fields">
+             <div class="field">
+               <label>회사명</label>
+               <input type="text" name="company-name" placeholder="대박여행사">
+             </div>
+             <div class="field">
+               <label>대표</label>
+               <input type="text" name="owner" placeholder="박명수">
+             </div>
+             <div class="field">
+               <label>전화번호</label>
+               <input type="text" name="telephone" placeholder="02-999-9999">
+             </div>
+             <div class="field">
+               <label>팩스번호</label>
+               <input type="text" name="fax" placeholder="02-999-9920">
+             </div>
+           </div>
+
+           <div class="fields">
+             <div class="six wide field">
+               <label>주소</label>
+               <input type="text" name="address" placeholder="서울시 강남구 대치동 로켓빌딩">
+             </div>
+             <div class="four wide field">
+               <label>사업자등록번호</label>
+               <input type="text" name="reg-number" placeholder="333-22-33333">
+             </div>
+             <div class="four wide field">
+               <label>주업무지역</label>
+               <input type="text" name="majorLand" placeholder="베트남,다낭,캄포디아">
+             </div>
+             <div class="two wide field">
+               <label>구분</label>
+               <input type="text" name="majorLand" placeholder="구분">
+             </div>
+           </div>
+
+           <div class="fields">
+             <div class="three wide field file">
+               <label>사진등록</label>
+               <input id="companyImageInput" type="file" name="fileupload" accept="image/*">
+               <button class="ui mini button imageUpload">서버로보내기</button>
+             </div>
+             <div class="six wide field">
+              <img class="ui small image" src="/img/white-image.png" style="border:1px solid rgba(34,36,38,.15)">
+            </div>
+          </div>
+
+          <h4 class="ui dividing header">계좌정보</h4>
+          <table id="accountInfo" class="ui fixed single line celled table">
+            <thead>
+              <tr>
+                <th>은행</th>
+                <th>계좌번호</th>
+                <th>예금주</th>
+                <th>비고</th>
+                <th></th>
+              </tr></thead>
+              <tbody>
+                <tr>
+                  <td> <input type="text" name="account-bank" placeholder="씨티은행"> </td>
+                  <td> <input type="text" name="account-number" placeholder="711-11-111111"> </td>
+                  <td> <input type="text" name="account-owner" placeholder="남서희"> </td>
+                  <td> <input type="text" name="account-other" placeholder="얼렁뚱땅"> </td>
+                  <td>
+                   <div class="two wide column">
+                    <button class="ui icon button plus">
+                      <i class="plus icon"></i>
+                    </button> 
+                    <button class="ui icon button minus">
+                      <i class="minus icon"></i>
+                    </button> 
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 class="ui dividing header">기타정보</h4>
+          <div class="five fields">
+           <div class="field">
+             <label>설립년월일</label>
+             <input type="text" name="create-date" placeholder="2001-01-20">
+           </div>
+           <div class="field">
+             <label>사업의종류</label>
+             <input type="text" name="business-kind" placeholder="여행">
+           </div>
+           <div class="field">
+             <label>관광사업등록번호</label>
+             <input type="text" name="tour-number" placeholder="12-999-9999">
+           </div>
+           <div class="field">
+             <label>법인등록번호</label>
+             <input type="text" name="public-number" placeholder="11-999-9920">
+           </div>
+           <div class="field">
+             <label>기타</label>
+             <input type="text" name="others" placeholder="기타로오토바이타자">
+           </div>
+         </div>
+
+         <div class="ui middle aligned center aligned grid fields">
+           <button class="ui button">제출</button>
+           <button class="ui button">리셋</button>
+         </div>
+       </form>
+
+     </div>
+   </div>
+
+   <div class="ui inverted vertical footer segment">
+    <div class="ui center aligned container">
+      <div class="ui stackable inverted divided grid">
+        <div class="three wide column">
+          <h4 class="ui inverted header">Group 1</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Link One</a>
+            <a href="#" class="item">Link Two</a>
+            <a href="#" class="item">Link Three</a>
+            <a href="#" class="item">Link Four</a>
+          </div>
+        </div>
+        <div class="three wide column">
+          <h4 class="ui inverted header">Group 2</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Link One</a>
+            <a href="#" class="item">Link Two</a>
+            <a href="#" class="item">Link Three</a>
+            <a href="#" class="item">Link Four</a>
+          </div>
+        </div>
+        <div class="three wide column">
+          <h4 class="ui inverted header">Group 3</h4>
+          <div class="ui inverted link list">
+            <a href="#" class="item">Link One</a>
+            <a href="#" class="item">Link Two</a>
+            <a href="#" class="item">Link Three</a>
+            <a href="#" class="item">Link Four</a>
+          </div>
+        </div>
+        <div class="seven wide column">
+          <h4 class="ui inverted header">Footer Header</h4>
+          <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+        </div>
+      </div>
+      <div class="ui inverted section divider"></div>
+      <img src="" class="ui centered mini image">
+      <div class="ui horizontal inverted small divided link list">
+        <a class="item" href="#">Site Map</a>
+        <a class="item" href="#">Contact Us</a>
+        <a class="item" href="#">Terms and Conditions</a>
+        <a class="item" href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="/lib/semantic/js/semantic.min.js"></script>
+    <script src="../js/rd_setting.js"></script>
+
+    <script type="rocket/template" id="tableRow">
+      <tr>
+        <td> <input type="text" name="account-bank" placeholder="씨티은행"> </td>
+        <td> <input type="text" name="account-number" placeholder="711-11-111111"> </td>
+        <td> <input type="text" name="account-owner" placeholder="남서희"> </td>
+        <td> <input type="text" name="account-other" placeholder="얼렁뚱땅"> </td>
+        <td>
+         <div class="two wide column">
+          <button class="ui icon button">
+            <i class="plus icon"></i>
+            <i class="minus icon"></i>
+          </button> 
+        </div>
+      </td>
+    </tr>
+  </script>
+
+    </body>
+</html>
