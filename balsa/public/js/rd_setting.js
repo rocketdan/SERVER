@@ -1,3 +1,19 @@
+
+var rocketUtil = {
+	sendFileUpload : function(fileObj, sUrl, fnCallback) {
+		var xhr 		= new XMLHttpRequest();
+		var formData 	= new FormData()
+		formData.append('file', fileObj);
+		xhr.open('POST', sUrl);
+		xhr.send(formData);
+
+		xhr.addEventListener("load", function(evt) {
+			var htResult 	= JSON.parse(evt.target.responseText);
+			fnCallback(htResult);
+		});
+	}
+};
+
 (function(doc,win) {
 	document.addEventListener("DOMContentLoaded", function(){
 		init();
@@ -8,23 +24,15 @@
 	}
 
 	function registerEvents() {
-		uploadCompanyImage();
-		plusTR();
+		registerUpLoadCompanyImage();
+		registerAccountTRPlus();
 	}
 
-	function plusTR() {
+	function registerAccountTRPlus() {
 		var el = doc.querySelector(".ui.icon.button.plus");
 		el.addEventListener("click", function(evt){
 			evt.preventDefault();
 			appendRow(evt.target);
-		});
-	}
-
-	function minusTR() {
-		var el = doc.querySelector(".ui.icon.button.minus");
-		el.addEventListener("click", function(evt){
-			evt.preventDefault();
-			deleteRow(evt.target);
 		});
 	}
 
@@ -65,18 +73,21 @@
 		elCurrentTR.parentElement.removeChild(elCurrentTR);
 	}
 
-	function uploadCompanyImage() {
-    	var xhr 		= new XMLHttpRequest();
-		var elBtn 		= doc.querySelector("button.imageUpload");
+	function registerUpLoadCompanyImage() {
+		var elBtn 			= doc.querySelector("button.imageUpload");
+		var elImagePreview 	= doc.querySelector("#companyImgPreview");
+
+		var fnAfterReceiveData = function(htResult) {
+			var sImageURL 	= htResult.data[0].file_uuid;
+			elImagePreview.src = "/uploadImage/" + sImageURL;
+		}
 
 		elBtn.addEventListener("click", function(evt){
 			evt.preventDefault();
-			var formData 	= new FormData()
-			var file = doc.getElementById('companyImageInput').files[0];
-			formData.append('file', file);
-			xhr.open('POST', 'myserver/uploads');
-			xhr.send(formData);
+			var fileObj = document.getElementById('companyImageInput').files[0];
+			rocketUtil.sendFileUpload(fileObj, '/upload', fnAfterReceiveData);
 		});
+
 	}
 
 })(document,window);
