@@ -288,12 +288,11 @@ router.post('/upload', function(req, res) {
 
 		category = fields.category
 
-		console.log(fields);
-		console.log(files);
+		// console.log(fields);
+		// console.log(files.uploaddata);
 		// 이 미들웨어는 멀티파트 요청을 파싱하기 위해 form.parse를 사용하는데
 		// form.parse의 콜백함수의 매개변수(fields, files)로 폼의 필드 정보들과 파일 정보들이 전달된다.
 
-		/*
 		// 여러개의 파일을 업로드하는 경우
 		if (files.uploaddata instanceof Array) {
 			var data = [];
@@ -301,7 +300,9 @@ router.post('/upload', function(req, res) {
 			async.each(files.uploaddata, function(file, cb) {
 				// 파일명만 추출후 업로드되는 파일명으로 선택하여 이미지가 저장될 경로를 더해준다.
 				var uuidName = uuid.v4();
-
+				var fileExtensions = file.name.match(/\.[^.]*$/);
+				fileExtensions = fileExtensions != null ? fileExtensions[0] : "";
+				uuidName += fileExtensions;
 				var destPath = path.normalize(baseImageDir + path.basename(uuidName));
 				// 해당 파일명을 서버로 전송처
 				fstools.move(file.path, destPath, function(err) {
@@ -335,6 +336,7 @@ router.post('/upload', function(req, res) {
 		// 파일을 선택하지 않았을때
 		else {
 			if (!files.uploaddata.name) {
+
 				// 파일 선택하지 않았을 경우 업로드 과정에서 생긴 크기가 0인 파일을 삭제한다.
 				fstools.remove(files.uploaddata.path, function(err) {
 					if (err) {
@@ -354,8 +356,10 @@ router.post('/upload', function(req, res) {
 				// 업로드된 파일을(files.uploaddata) /images디렉토리로 옮긴다.
 				// 업로드 되는 파일명을 추출해서 이미지가 저장될 경로를 더해준다.
 				var uuidName = uuid.v4();
+				var fileExtensions = files.uploaddata.name.match(/\.[^.]*$/);
+				fileExtensions = fileExtensions != null ? fileExtensions[0] : "";
+				uuidName += fileExtensions;
 				var destPath = path.normalize(baseImageDir + path.basename(uuidName));
-				console.log();
 				// 임시 폴더에 저장된 이미지 파일을 이미지 경로로 이동시킨다.
 				fstools.move(files.uploaddata.path, destPath, function(err) {
 					if (err) {
@@ -376,30 +380,29 @@ router.post('/upload', function(req, res) {
 				});
 			}
 		}
-		*/
 
 		// 업로드된 파일을(files.uploaddata) /images디렉토리로 옮긴다.
-				// 업로드 되는 파일명을 추출해서 이미지가 저장될 경로를 더해준다.
-		var uuidName = uuid.v4();
-		var destPath = path.normalize(baseImageDir + path.basename(uuidName));
+		// 업로드 되는 파일명을 추출해서 이미지가 저장될 경로를 더해준다.
+		// var uuidName = uuid.v4();
+		// var destPath = path.normalize(baseImageDir + path.basename(uuidName));
 		// 임시 폴더에 저장된 이미지 파일을 이미지 경로로 이동시킨다.
-		fstools.move(files.file.path, destPath, function(err) {
-			if (err) {
-				err.status(500);
-				next(err);
-			} else {
-				var data = {
-					file_uuid : uuidName,
-					file_category : category,
-					file_name : files.file.name
-				};
-				res.status(200);
-				res.json({
-					error : null,
-					data : [ data ]
-				});
-			}
-		});
+		// fstools.move(files.uploaddata.File.path, destPath, function(err) {
+		// if (err) {
+		// err.status(500);
+		// next(err);
+		// } else {
+		// var data = {
+		// file_uuid : uuidName,
+		// file_category : category,
+		// file_name : files.file.name
+		// };
+		// res.status(200);
+		// res.json({
+		// error : null,
+		// data : [ data ]
+		// });
+		// }
+		// });
 
 	});
 	form.on('progress', function(receivedBytes, expectedBytes) {

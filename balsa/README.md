@@ -123,6 +123,17 @@ company_id,bank_name,account_num,account_auth,note
 url: /account/update
 ```
 
+- response
+
+value는 update 행수. 0이면 데이터가 없음.
+
+저장되지 않은 데이터 또는 삭제된 데이터.
+
+error는 발생시 에러 메시지 전송. 
+```
+{"data":"value","error":null}
+```
+
 ####계좌정보 delete
 
 파라미터
@@ -131,6 +142,15 @@ id => 삭제하고 싶은 seq_id 값
 
 ```
 url: /account/delete
+```
+
+- response
+
+value는 delete 행수. 0일시 삭제데이터가 없음 .
+
+error는 발생시 에러 메시지 전송. 
+```
+{"data":"value","error":null}
 ```
 
 ####계좌정보 insert
@@ -146,6 +166,14 @@ company_id,bank_name,account_num,account_auth,note
 url: /account/insert
 ```
 
+- response
+
+value는 insert 아이디
+
+error는 발생시 에러 메시지 전송. 
+```
+{"data":"value","error":null}
+```
 
 
 
