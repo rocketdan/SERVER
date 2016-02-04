@@ -1,3 +1,5 @@
 node_modules/
 semantic.json
 semantic/
+public/uploadImage/
+uploads/
