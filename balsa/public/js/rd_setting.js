@@ -24,9 +24,26 @@ var rocketUtil = {
 	}
 
 	function registerEvents() {
-		registerUpLoadCompanyImage();
 		registerAccountTRPlus();
+		registerInputFileChange();
 	}
+
+	function registerInputFileChange() {
+		var elBtn 			= doc.querySelector("button.imageUpload");
+		var elFileInput 	= doc.getElementById('companyImageInput');
+		var elImagePreview 	= doc.querySelector("#companyImgPreview");
+
+		var fnAfterReceiveData = function(htResult) {
+			var sImageURL 		= htResult.data[0].file_uuid;
+			elImagePreview.src 	= "/uploadImage/" + sImageURL;
+		}
+
+		elFileInput.addEventListener("change", function() {
+			var fileObj = document.getElementById('companyImageInput').files[0];
+			rocketUtil.sendFileUpload(fileObj, '/upload', fnAfterReceiveData);
+		});
+	}
+
 
 	function registerAccountTRPlus() {
 		var el = doc.querySelector(".ui.icon.button.plus");
@@ -73,21 +90,5 @@ var rocketUtil = {
 		elCurrentTR.parentElement.removeChild(elCurrentTR);
 	}
 
-	function registerUpLoadCompanyImage() {
-		var elBtn 			= doc.querySelector("button.imageUpload");
-		var elImagePreview 	= doc.querySelector("#companyImgPreview");
-
-		var fnAfterReceiveData = function(htResult) {
-			var sImageURL 	= htResult.data[0].file_uuid;
-			elImagePreview.src = "/uploadImage/" + sImageURL;
-		}
-
-		elBtn.addEventListener("click", function(evt){
-			evt.preventDefault();
-			var fileObj = document.getElementById('companyImageInput').files[0];
-			rocketUtil.sendFileUpload(fileObj, '/upload', fnAfterReceiveData);
-		});
-
-	}
 
 })(document,window);
