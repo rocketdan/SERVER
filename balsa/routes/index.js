@@ -410,12 +410,3 @@ router.post('/upload', function(req, res) {
 	});
 });
 module.exports = router;
-
-var t = {
-	"error" : null,
-	"data" : [ {
-		"file_uuid" : "af1cd51b-3e2f-4aa6-ada6-91d024fd4932",
-		"file_category" : "test",
-		"file_name" : "rocketdan.sql"
-	} ]
-}
