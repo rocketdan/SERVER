@@ -174,17 +174,3 @@ error는 발생시 에러 메시지 전송.
 ```
 {"data":"value","error":null}
 ```
-
-
-
-## Develordsfping
-
-
-
-### Tools test
-
-Created with [Nodeclipse](https://github.com/Nodeclipse/nodeclipse-1)
- ([Eclipse Marketplace](http://marketplace.eclipse.org/content/nodeclipse), [site](http://www.nodeclipse.org))   
-
-Nodeclipse is free open-source project that grows with your contributions.
-테스트1
