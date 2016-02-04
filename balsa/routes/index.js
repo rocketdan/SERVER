@@ -410,4 +410,3 @@ router.post('/upload', function(req, res) {
 	});
 });
 module.exports = router;
-var test="머지테스트.2"
