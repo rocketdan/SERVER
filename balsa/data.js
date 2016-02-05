@@ -1,15 +1,19 @@
 var mysql = require('mysql');
 var db_config = {
-	host : "192.168.56.101",
+	host : "http://rocketdan.duckdns.org/",
 	port : 3306,
-	user : "rocket",
-	password : "rocket",
+	user : "rocketdan",
+	password : "rocketdan!@#",
 	database : 'rocket',
 // db : "rocket",
 };
 var connection;
 
 function handleDisconnect() {
+	var aws=process.env.aws;
+	if(aws != undefined && aws!=""){
+		db_config.host="localhost";
+	}
 	connection = mysql.createConnection(db_config);
 	connection.connect(function(err) {
 		if (err) {
