@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 var db_config = {
-	host : "http://rocketdan.duckdns.org/",
+	host : "rocketdan.duckdns.org",
 	port : 3306,
 	user : "rocketdan",
 	password : "rocketdan!@#",
@@ -8,11 +8,10 @@ var db_config = {
 // db : "rocket",
 };
 var connection;
-
 function handleDisconnect() {
-	var aws=process.env.aws;
-	if(aws != undefined && aws!=""){
-		db_config.host="localhost";
+	var aws = process.env.aws;
+	if (aws != undefined && aws != "") {
+		db_config.host = "localhost";
 	}
 	connection = mysql.createConnection(db_config);
 	connection.connect(function(err) {
@@ -30,10 +29,10 @@ function handleDisconnect() {
 		}
 	});
 }
-
+handleDisconnect();
 exports.connect = function() {
-	handleDisconnect();
-}
+
+};
 // select query 실행함수.
 // 콜백변수 err, 검색 결과.
 exports.selectQuery = function(query, callback) {
@@ -43,14 +42,14 @@ exports.selectQuery = function(query, callback) {
 			callback(err, rows);
 		}
 	});
-}
+};
 // insert query 실행함수.
 // 콜백변수 err, 추가된 아이디.
 exports.insertQuery = function(query, value, callback) {
 	connection.query(query, value, function(err, result) {
 		var id = 0;
 		console.log(result);
-		if (result.insertId != undefined) {
+		if (result.insertId !== undefined) {
 
 			id = result.insertId;
 		}
@@ -59,7 +58,7 @@ exports.insertQuery = function(query, value, callback) {
 			callback(err, id);
 		}
 	});
-}
+};
 // update query 실행함수.
 // 콜백변수 err, 변경행수.
 exports.updateQuery = function(query, value, callback) {
@@ -73,21 +72,21 @@ exports.updateQuery = function(query, value, callback) {
 			callback(err, change);
 		}
 	});
-}
+};
 // delete query 실행함수.
 // 콜백변수 err, 삭제행수.
 exports.deleteQuery = function(query, callback) {
 	connection.query(query, function(err, result) {
 		console.log(result);
 		var change = 0;
-		if (result.affectedRows != undefined) {
+		if (result.affectedRows !== undefined) {
 			change = result.affectedRows;
 		}
 		if (typeof (callback) === "function") {
 			callback(err, change);
 		}
 	});
-}
+};
 exports.escape = function(data) {
 	return connection.escape(data);
-}
+};
