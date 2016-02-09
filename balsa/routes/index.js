@@ -1,16 +1,15 @@
 var express = require('express');
 var uuid = require('uuid');
 var fs = require('fs');
-
+var data = require('../data.js');
 var router = express.Router();
 router.get('/', function(req, res, next) {
-
 	res.render('index.html', {
 		title : 'Express'
 	});
 });
 router.get('/company_info_list', function(req, res, next) {
-	var data = require('../data.js');
+
 	var id = req.param("id");
 	var sql = 'select * from company_info';
 	console.log(id);
@@ -39,6 +38,11 @@ router.get('/company_info_list/insert', function(req, res, next) {
 	tempParam = req.param("company_name");
 	if (tempParam != undefined) {
 		params['company_name'] = tempParam;
+		tempParam = null
+	}
+	tempParam = req.param("sub_id");
+	if (tempParam != undefined) {
+		params['sub_id'] = tempParam;
 		tempParam = null
 	}
 	tempParam = req.param("ceo_name");
@@ -112,8 +116,7 @@ router.get('/company_info_list/insert', function(req, res, next) {
 		tempParam = null
 	}
 	if (params.company_name != undefined && params.company_name.trim() != "") {
-		var data = require('../data.js');
-		data.connect();
+		params['mod_date'] = params['reg_date'] = new Date();
 		data.insertQuery('insert into company_info set ?', params, function(err, id) {
 			var result = {
 				data : [],
@@ -138,10 +141,8 @@ router.get('/company_info_list/insert', function(req, res, next) {
 });
 
 router.get('/company_info_list/delete', function(req, res, next) {
-	var data = require('../data.js');
 	var id = req.param("id");
 	if (id != undefined && id.trim() != "") {
-		data.connect();
 		data.deleteQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change) {
 			var result = {
 				data : [],
@@ -238,9 +239,7 @@ router.get('/company_info_list/update', function(req, res, next) {
 			params['work_location'] = tempParam;
 			tempParam = null
 		}
-
-		var data = require('../data.js');
-		data.connect();
+		params['mod_date'] = new Date();
 		data.updateQuery('update company_info set ? where seq_id = ?', [ params, id ], function(err, change) {
 			var result = {
 				data : [],

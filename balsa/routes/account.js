@@ -56,6 +56,7 @@ router.get('/insert', function(req, res, next) {
 		tempParam = null
 	}
 	if (params.company_id !== undefined && params.company_id.trim() != "") {
+		params['mod_date'] = params['reg_date'] = new Date();
 		data.insertQuery('insert into company_account set ?', params, function(err, id) {
 			var result = {
 				data : [],
@@ -107,6 +108,7 @@ router.get('/update', function(req, res, next) {
 			params['note'] = tempParam;
 			tempParam = null
 		}
+		params['mod_date'] = new Date();
 		data.updateQuery('update company_account set ? where seq_id = ?', [ params, id ], function(err, change) {
 			var result = {
 				data : [],

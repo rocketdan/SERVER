@@ -30,9 +30,6 @@ function handleDisconnect() {
 	});
 }
 handleDisconnect();
-exports.connect = function() {
-
-};
 // select query 실행함수.
 // 콜백변수 err, 검색 결과.
 exports.selectQuery = function(query, callback) {
@@ -46,10 +43,9 @@ exports.selectQuery = function(query, callback) {
 // insert query 실행함수.
 // 콜백변수 err, 추가된 아이디.
 exports.insertQuery = function(query, value, callback) {
-	connection.query(query, value, function(err, result) {
+	var sql = connection.query(query, value, function(err, result) {
 		var id = 0;
-		console.log(result);
-		if (result.insertId !== undefined) {
+		if (!err && result.insertId != undefined) {
 
 			id = result.insertId;
 		}
@@ -58,6 +54,7 @@ exports.insertQuery = function(query, value, callback) {
 			callback(err, id);
 		}
 	});
+	console.log(sql.sql);
 };
 // update query 실행함수.
 // 콜백변수 err, 변경행수.
@@ -65,7 +62,7 @@ exports.updateQuery = function(query, value, callback) {
 	connection.query(query, value, function(err, result) {
 		console.log(result);
 		var change = 0;
-		if (result != undefined && result.changedRows != undefined) {
+		if (!err && result.changedRows != undefined) {
 			change = result.changedRows;
 		}
 		if (typeof (callback) === "function") {
@@ -79,7 +76,7 @@ exports.deleteQuery = function(query, callback) {
 	connection.query(query, function(err, result) {
 		console.log(result);
 		var change = 0;
-		if (result.affectedRows !== undefined) {
+		if (!err && result.affectedRows !== undefined) {
 			change = result.affectedRows;
 		}
 		if (typeof (callback) === "function") {
