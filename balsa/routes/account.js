@@ -2,7 +2,7 @@ var express = require('express');
 var uuid = require('uuid');
 var fs = require('fs');
 var data = require('../data.js');
-data.connect();
+//data.connect();
 
 var router = express.Router();
 router.get('/list', function(req, res, next) {
