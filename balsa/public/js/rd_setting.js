@@ -3,7 +3,7 @@ var rocketUtil = {
 	sendFileUpload : function(fileObj, sUrl, fnCallback) {
 		var xhr 		= new XMLHttpRequest();
 		var formData 	= new FormData()
-		formData.append('file', fileObj);
+		formData.append('uploaddata', fileObj);
 		xhr.open('POST', sUrl);
 		xhr.send(formData);
 
