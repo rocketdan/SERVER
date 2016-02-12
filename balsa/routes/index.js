@@ -35,13 +35,13 @@ router.post('/company_info_list/insert', function(req, res, next) {
 	var params = {};
 	var tempParam = null;
 	var paramNames = [ "company_name", "sub_id", "ceo_name", "company_num", "company2_num", "tour_num", "sub_num", "type", "company_reg_date", "tel_num", "tel2_num", "fax_num", "fax2_num", "post_address", "address", "work_location" ];
-	for (name in paramNames) {
-		tempParam = req.param(name);
-		if (tempParam !== undefined) {
-			params[name] = tempParam;
-			tempParam = null
-		}
-	}
+
+	for (var i = 0, nPlen = paramNames.length; i < nPlen; i++) {
+		tempParam = req.param(paramNames[i]);
+		if(tempParam === undefined) continue;
+		params[paramNames[i]] = tempParam;
+	};
+
 	if (params.company_name != undefined && params.company_name.trim() != "") {
 		params['mod_date'] = params['reg_date'] = new Date();
 		data.insertQuery('insert into company_info set ?', params, function(err, id) {
