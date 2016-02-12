@@ -47,22 +47,26 @@
         <div class="companyInfoWrap">
           <form id="companyForm"  class="ui form" action="" method="post">
            <h4 class="ui dividing header">기본정보</h4>
-           <div class="four fields">
+           <div class="five fields">
              <div class="field">
                <label>회사명</label>
-               <input type="text" name="company-name" placeholder="대박여행사">
+               <input type="text" name="company_name" placeholder="대박여행사">
              </div>
              <div class="field">
                <label>대표</label>
-               <input type="text" name="owner" placeholder="박명수">
+               <input type="text" name="ceo_name" placeholder="박명수">
              </div>
              <div class="field">
                <label>전화번호</label>
-               <input type="text" name="telephone" placeholder="02-999-9999">
+               <input type="text" name="tel_num" placeholder="02-999-9999">
              </div>
              <div class="field">
                <label>팩스번호</label>
-               <input type="text" name="fax" placeholder="02-999-9920">
+               <input type="text" name="fax_num" placeholder="02-999-9920">
+             </div>
+              <div class="field">
+               <label>구분</label>
+               <input type="text" name="type" placeholder="구분">
              </div>
            </div>
 
@@ -71,18 +75,19 @@
                <label>주소</label>
                <input type="text" name="address" placeholder="서울시 강남구 대치동 로켓빌딩">
              </div>
+             <div class="two wide field">
+               <label>우편번호</label>
+               <input type="text" name="post_address" placeholder="333-22-33333">
+             </div>
              <div class="four wide field">
                <label>사업자등록번호</label>
-               <input type="text" name="reg-number" placeholder="333-22-33333">
+               <input type="text" name="company_num" placeholder="333-22-33333">
              </div>
              <div class="four wide field">
                <label>주업무지역</label>
-               <input type="text" name="majorLand" placeholder="베트남,다낭,캄포디아">
+               <input type="text" name="work_location" placeholder="베트남,다낭,캄포디아">
              </div>
-             <div class="two wide field">
-               <label>구분</label>
-               <input type="text" name="majorLand" placeholder="구분">
-             </div>
+            
            </div>
 
            <div class="fields">
@@ -96,22 +101,22 @@
             </div>
           </div>
 
-          <h4 class="ui dividing header">계좌정보</h4>
+<!--           <h4 class="ui dividing header">계좌정보</h4>
           <table id="accountInfo" class="ui fixed single line celled table">
             <thead>
               <tr>
                 <th>은행</th>
                 <th>계좌번호</th>
                 <th>예금주</th>
-                <th>비고</th>
+                <th>설명</th>
                 <th></th>
               </tr></thead>
               <tbody>
                 <tr>
-                  <td> <input type="text" name="account-bank" placeholder="씨티은행"> </td>
-                  <td> <input type="text" name="account-number" placeholder="711-11-111111"> </td>
-                  <td> <input type="text" name="account-owner" placeholder="남서희"> </td>
-                  <td> <input type="text" name="account-other" placeholder="얼렁뚱땅"> </td>
+                  <td> <input type="text" name="bank_name" placeholder="씨티은행"> </td>
+                  <td> <input type="text" name="account_num" placeholder="711-11-111111"> </td>
+                  <td> <input type="text" name="account_auth" placeholder="남서희"> </td>
+                  <td> <input type="text" name="note" placeholder="가장중요한계좌"> </td>
                   <td>
                    <div class="two wide column">
                     <button class="ui icon button plus">
@@ -125,34 +130,26 @@
               </tr>
             </tbody>
           </table>
-
+ -->
           <h4 class="ui dividing header">기타정보</h4>
-          <div class="five fields">
+          <div class="three fields">
            <div class="field">
              <label>설립년월일</label>
-             <input type="text" name="create-date" placeholder="2001-01-20">
-           </div>
-           <div class="field">
-             <label>사업의종류</label>
-             <input type="text" name="business-kind" placeholder="여행">
+             <input type="text" name="company_reg_date" placeholder="2001-01-20">
            </div>
            <div class="field">
              <label>관광사업등록번호</label>
-             <input type="text" name="tour-number" placeholder="12-999-9999">
+             <input type="text" name="tour_num" placeholder="12-999-9999">
            </div>
            <div class="field">
              <label>법인등록번호</label>
-             <input type="text" name="public-number" placeholder="11-999-9920">
-           </div>
-           <div class="field">
-             <label>기타</label>
-             <input type="text" name="others" placeholder="기타로오토바이타자">
+             <input type="text" name="company2_num" placeholder="11-999-9920">
            </div>
          </div>
 
          <div class="ui middle aligned center aligned grid fields">
-           <button class="ui button">제출</button>
-           <button class="ui button">리셋</button>
+           <button class="ui button formSubmit">제출</button>
+           <button class="ui button formReset">리셋</button>
          </div>
        </form>
 
