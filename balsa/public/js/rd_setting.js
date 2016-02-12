@@ -20,7 +20,13 @@ var rocketUtil = {
 	});
 
 	function init() {
+		changeViews();
 		registerEvents();
+	}
+
+	function changeViews() {
+		//refs => http://semantic-ui.com/collections/form.html#dropdown
+		$('select.dropdown').dropdown();
 	}
 
 	function registerEvents() {
