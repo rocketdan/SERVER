@@ -13,7 +13,6 @@ router.get('/company_info_list', function(req, res, next) {
 	var id = req.param("id");
 	var sql = 'select * from company_info';
 	console.log(id);
-	//data.connect();
 	if (id != undefined && id != "") {
 		sql = sql + " where seq_id = " + data.escape(id);
 	}
@@ -32,88 +31,16 @@ router.get('/company_info_list', function(req, res, next) {
 		res.send(result);
 	});
 });
-router.get('/company_info_list/insert', function(req, res, next) {
+router.post('/company_info_list/insert', function(req, res, next) {
 	var params = {};
 	var tempParam = null;
-	tempParam = req.param("company_name");
-	if (tempParam != undefined) {
-		params['company_name'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("sub_id");
-	if (tempParam != undefined) {
-		params['sub_id'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("ceo_name");
-	if (tempParam != undefined) {
-		params['ceo_name'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("company_num");
-	if (tempParam != undefined) {
-		params['company_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("company2_num");
-	if (tempParam != undefined) {
-		params['company2_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("tour_num");
-	if (tempParam != undefined) {
-		params['tour_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("sub_num");
-	if (tempParam != undefined) {
-		params['sub_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("type");
-	if (tempParam != undefined) {
-		params['type'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("company_reg_date");
-	if (tempParam != undefined) {
-		params['company_reg_date'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("tel_num");
-	if (tempParam != undefined) {
-		params['tel_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("tel2_num");
-	if (tempParam != undefined) {
-		params['tel2_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("fax_num");
-	if (tempParam != undefined) {
-		params['fax_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("fax2_num");
-	if (tempParam != undefined) {
-		params['fax2_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("post_address");
-	if (tempParam != undefined) {
-		params['post_address'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("adress");
-	if (tempParam != undefined) {
-		params['adress'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("work_location");
-	if (tempParam != undefined) {
-		params['work_location'] = tempParam;
-		tempParam = null
+	var paramNames = [ "company_name", "sub_id", "ceo_name", "company_num", "company2_num", "tour_num", "sub_num", "type", "company_reg_date", "tel_num", "tel2_num", "fax_num", "fax2_num", "post_address", "address", "work_location" ];
+	for (name in paramNames) {
+		tempParam = req.param(name);
+		if (tempParam !== undefined) {
+			params[name] = tempParam;
+			tempParam = null
+		}
 	}
 	if (params.company_name != undefined && params.company_name.trim() != "") {
 		params['mod_date'] = params['reg_date'] = new Date();
@@ -140,7 +67,7 @@ router.get('/company_info_list/insert', function(req, res, next) {
 
 });
 
-router.get('/company_info_list/delete', function(req, res, next) {
+router.post('/company_info_list/delete', function(req, res, next) {
 	var id = req.param("id");
 	if (id != undefined && id.trim() != "") {
 		data.deleteQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change) {
@@ -164,80 +91,18 @@ router.get('/company_info_list/delete', function(req, res, next) {
 		res.send(result);
 	}
 });
-router.get('/company_info_list/update', function(req, res, next) {
+router.post('/company_info_list/update', function(req, res, next) {
 	var id = req.param("id");
 	if (id != undefined && id.trim() != "") {
 		var params = {};
 		var tempParam = null;
-		tempParam = req.param("ceo_name");
-		if (tempParam != undefined) {
-			params['ceo_name'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("company_num");
-		if (tempParam != undefined) {
-			params['company_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("company2_num");
-		if (tempParam != undefined) {
-			params['company2_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("tour_num");
-		if (tempParam != undefined) {
-			params['tour_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("sub_num");
-		if (tempParam != undefined) {
-			params['sub_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("type");
-		if (tempParam != undefined) {
-			params['type'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("company_reg_date");
-		if (tempParam != undefined) {
-			params['company_reg_date'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("tel_num");
-		if (tempParam != undefined) {
-			params['tel_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("tel2_num");
-		if (tempParam != undefined) {
-			params['tel2_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("fax_num");
-		if (tempParam != undefined) {
-			params['fax_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("fax2_num");
-		if (tempParam != undefined) {
-			params['fax2_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("post_address");
-		if (tempParam != undefined) {
-			params['post_address'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("adress");
-		if (tempParam != undefined) {
-			params['adress'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("work_location");
-		if (tempParam != undefined) {
-			params['work_location'] = tempParam;
-			tempParam = null
+		var paramNames = [ "company_name", "sub_id", "ceo_name", "company_num", "company2_num", "tour_num", "sub_num", "type", "company_reg_date", "tel_num", "tel2_num", "fax_num", "fax2_num", "post_address", "address", "work_location" ];
+		for (name in paramNames) {
+			tempParam = req.param(name);
+			if (tempParam !== undefined) {
+				params[name] = tempParam;
+				tempParam = null
+			}
 		}
 		params['mod_date'] = new Date();
 		data.updateQuery('update company_info set ? where seq_id = ?', [ params, id ], function(err, change) {
@@ -379,30 +244,6 @@ router.post('/upload', function(req, res) {
 				});
 			}
 		}
-
-		// 업로드된 파일을(files.uploaddata) /images디렉토리로 옮긴다.
-		// 업로드 되는 파일명을 추출해서 이미지가 저장될 경로를 더해준다.
-		// var uuidName = uuid.v4();
-		// var destPath = path.normalize(baseImageDir + path.basename(uuidName));
-		// 임시 폴더에 저장된 이미지 파일을 이미지 경로로 이동시킨다.
-		// fstools.move(files.uploaddata.File.path, destPath, function(err) {
-		// if (err) {
-		// err.status(500);
-		// next(err);
-		// } else {
-		// var data = {
-		// file_uuid : uuidName,
-		// file_category : category,
-		// file_name : files.file.name
-		// };
-		// res.status(200);
-		// res.json({
-		// error : null,
-		// data : [ data ]
-		// });
-		// }
-		// });
-
 	});
 	form.on('progress', function(receivedBytes, expectedBytes) {
 		console.log(((receivedBytes / expectedBytes) * 100).toFixed(1) + '% received');

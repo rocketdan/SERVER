@@ -2,7 +2,6 @@ var express = require('express');
 var uuid = require('uuid');
 var fs = require('fs');
 var data = require('../data.js');
-//data.connect();
 
 var router = express.Router();
 router.get('/list', function(req, res, next) {
@@ -27,33 +26,16 @@ router.get('/list', function(req, res, next) {
 		res.send(result);
 	});
 });
-router.get('/insert', function(req, res, next) {
+router.post('/insert', function(req, res, next) {
 	var params = {};
 	var tempParam = null;
-	tempParam = req.param("company_id");
-	if (tempParam !== undefined) {
-		params['company_id'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("bank_name");
-	if (tempParam !== undefined) {
-		params['bank_name'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("account_num");
-	if (tempParam !== undefined) {
-		params['account_num'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("account_auth");
-	if (tempParam !== undefined) {
-		params['account_auth'] = tempParam;
-		tempParam = null
-	}
-	tempParam = req.param("note");
-	if (tempParam !== undefined) {
-		params['note'] = tempParam;
-		tempParam = null
+	var paramNames = [ "company_id", "bank_name", "account_num", "account_auth", "note" ];
+	for (name in paramNames) {
+		tempParam = req.param(name);
+		if (tempParam !== undefined) {
+			params[name] = tempParam;
+			tempParam = null
+		}
 	}
 	if (params.company_id !== undefined && params.company_id.trim() != "") {
 		params['mod_date'] = params['reg_date'] = new Date();
@@ -78,35 +60,18 @@ router.get('/insert', function(req, res, next) {
 		res.send(result);
 	}
 });
-router.get('/update', function(req, res, next) {
+router.post('/update', function(req, res, next) {
 	var id = req.param("id");
 	if (id !== undefined && id.trim() !== "") {
 		var params = {};
 		var tempParam = null;
-		tempParam = req.param("company_id");
-		if (tempParam !== undefined) {
-			params['company_id'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("bank_name");
-		if (tempParam !== undefined) {
-			params['bank_name'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("account_num");
-		if (tempParam !== undefined) {
-			params['account_num'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("account_auth");
-		if (tempParam !== undefined) {
-			params['account_auth'] = tempParam;
-			tempParam = null
-		}
-		tempParam = req.param("note");
-		if (tempParam !== undefined) {
-			params['note'] = tempParam;
-			tempParam = null
+		var paramNames = [ "company_id", "bank_name", "account_num", "account_auth", "note" ];
+		for (name in paramNames) {
+			tempParam = req.param(name);
+			if (tempParam !== undefined) {
+				params[name] = tempParam;
+				tempParam = null
+			}
 		}
 		params['mod_date'] = new Date();
 		data.updateQuery('update company_account set ? where seq_id = ?', [ params, id ], function(err, change) {
@@ -130,7 +95,7 @@ router.get('/update', function(req, res, next) {
 		res.send(result);
 	}
 });
-router.get('/delete', function(req, res, next) {
+router.post('/delete', function(req, res, next) {
 	var id = req.param("id");
 	if (id !== undefined && id.trim() !== "") {
 		data.deleteQuery("delete from company_account where seq_id = " + data.escape(id), function(err, change) {
