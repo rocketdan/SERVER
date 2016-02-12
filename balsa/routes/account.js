@@ -30,12 +30,11 @@ router.post('/insert', function(req, res, next) {
 	var params = {};
 	var tempParam = null;
 	var paramNames = [ "company_id", "bank_name", "account_num", "account_auth", "note" ];
-	for (name in paramNames) {
+	for (var name of paramNames) {
+		console.log(name);
 		tempParam = req.param(name);
-		if (tempParam !== undefined) {
-			params[name] = tempParam;
-			tempParam = null
-		}
+		if(tempParam === undefined) continue;
+		params[name] = tempParam;
 	}
 	if (params.company_id !== undefined && params.company_id.trim() != "") {
 		params['mod_date'] = params['reg_date'] = new Date();
@@ -66,12 +65,11 @@ router.post('/update', function(req, res, next) {
 		var params = {};
 		var tempParam = null;
 		var paramNames = [ "company_id", "bank_name", "account_num", "account_auth", "note" ];
-		for (name in paramNames) {
+		for (var name of paramNames) {
+			console.log(name);
 			tempParam = req.param(name);
-			if (tempParam !== undefined) {
-				params[name] = tempParam;
-				tempParam = null
-			}
+			if(tempParam === undefined) continue;
+			params[name] = tempParam;
 		}
 		params['mod_date'] = new Date();
 		data.updateQuery('update company_account set ? where seq_id = ?', [ params, id ], function(err, change) {
