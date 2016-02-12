@@ -48,42 +48,49 @@
           <form id="companyForm"  class="ui form" action="" method="post">
            <h4 class="ui dividing header">기본정보</h4>
            <div class="five fields">
-             <div class="field">
+             <div class="field required">
                <label>회사명</label>
                <input type="text" name="company_name" placeholder="대박여행사">
              </div>
-             <div class="field">
+             <div class="field required">
                <label>대표</label>
                <input type="text" name="ceo_name" placeholder="박명수">
              </div>
-             <div class="field">
+             <div class="field required">
                <label>전화번호</label>
                <input type="tel" name="tel_num" placeholder="02-999-9999">
              </div>
-             <div class="field">
+             <div class="field required">
                <label>팩스번호</label>
                <input type="text" name="fax_num" placeholder="02-999-9920">
              </div>
-              <div class="field">
+              <div class="field required">
                <label>구분</label>
-               <input type="text" name="type" placeholder="여행사,랜드사,현지">
+               <select name="type" class="ui fluid search dropdown">
+                <option value="">지역선택</option>
+                <option value="tour">여행사</option>
+                <option value="land">랜드사</option>
+                <option value="local">현지</option>
+               </select>
+               <!-- input type="text" name="type" placeholder="여행사,랜드사,현지" -->
+
              </div>
            </div>
 
            <div class="fields">
-             <div class="six wide field">
+             <div class="six wide field required">
                <label>주소</label>
                <input type="text" name="address" placeholder="서울시 강남구 대치동 로켓빌딩">
              </div>
-             <div class="two wide field">
+             <div class="two wide field required">
                <label>우편번호</label>
                <input type="text" name="post_address" placeholder="333-22-33333">
              </div>
-             <div class="four wide field">
+             <div class="four wide field required">
                <label>사업자등록번호</label>
                <input type="text" name="company_num" placeholder="333-22-33333">
              </div>
-             <div class="four wide field">
+             <div class="four wide field required">
                <label>주업무지역</label>
                <input type="text" name="work_location" placeholder="베트남,다낭,캄포디아">
              </div>
@@ -91,7 +98,7 @@
            </div>
 
            <div class="fields">
-             <div class="three wide field file">
+             <div class="three wide field file required">
                <label>사진등록</label>
                <input id="companyImageInput" type="file" name="uploaddata" accept="image/*" multiple=""/>
                <button class="ui mini button imageUpload" style="display:none">서버로보내기</button>
