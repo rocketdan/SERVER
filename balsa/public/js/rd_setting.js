@@ -24,8 +24,9 @@ var rocketUtil = {
 	}
 
 	function registerEvents() {
-		registerAccountTRPlus();
+		//registerAccountTRPlus();
 		registerInputFileChange();
+		registerSubmitForm();
 	}
 
 	function registerInputFileChange() {
@@ -50,6 +51,17 @@ var rocketUtil = {
 		el.addEventListener("click", function(evt){
 			evt.preventDefault();
 			appendRow(evt.target);
+		});
+	}
+
+	function registerSubmitForm() {
+		var elSubmitBtn = doc.querySelector(".formSubmit");
+		var elForm 		= doc.getElementById("companyForm");
+		elForm.action 	= "/company_info_list/insert";
+
+		elSubmitBtn.addEventListener("click", function(evt) {
+			evt.preventDefault();
+			elForm.submit();
 		});
 	}
 
