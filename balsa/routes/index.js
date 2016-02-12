@@ -13,7 +13,7 @@ router.get('/company_info_list', function(req, res, next) {
 	var id = req.param("id");
 	var sql = 'select * from company_info';
 	console.log(id);
-	data.connect();
+	//data.connect();
 	if (id != undefined && id != "") {
 		sql = sql + " where seq_id = " + data.escape(id);
 	}
