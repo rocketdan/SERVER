@@ -31,7 +31,6 @@ router.post('/insert', function(req, res, next) {
 	var tempParam = null;
 	var paramNames = [ "company_id", "bank_name", "account_num", "account_auth", "note" ];
 	for (var name of paramNames) {
-		console.log(name);
 		tempParam = req.param(name);
 		if(tempParam === undefined) continue;
 		params[name] = tempParam;
@@ -66,7 +65,6 @@ router.post('/update', function(req, res, next) {
 		var tempParam = null;
 		var paramNames = [ "company_id", "bank_name", "account_num", "account_auth", "note" ];
 		for (var name of paramNames) {
-			console.log(name);
 			tempParam = req.param(name);
 			if(tempParam === undefined) continue;
 			params[name] = tempParam;

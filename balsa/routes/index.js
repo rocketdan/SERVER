@@ -31,13 +31,12 @@ router.get('/company_info_list', function(req, res, next) {
 		res.send(result);
 	});
 });
-router.post('/company_info_list/insert', function(req, res, next) {
+router.get('/company_info_list/insert', function(req, res, next) {
 	var params = {};
 	var tempParam = null;
 	var paramNames = [ "company_name", "sub_id", "ceo_name", "company_num", "company2_num", "tour_num", "sub_num", "type", "company_reg_date", "tel_num", "tel2_num", "fax_num", "fax2_num", "post_address", "address", "work_location" ];
 
-	foreach (var name of paramNames) {
-		console.log(name);
+	for (var name of paramNames) {
 		tempParam = req.param(name);
 		if(tempParam === undefined) continue;
 		params[name] = tempParam;
@@ -99,7 +98,6 @@ router.post('/company_info_list/update', function(req, res, next) {
 		var tempParam = null;
 		var paramNames = [ "company_name", "sub_id", "ceo_name", "company_num", "company2_num", "tour_num", "sub_num", "type", "company_reg_date", "tel_num", "tel2_num", "fax_num", "fax2_num", "post_address", "address", "work_location" ];
 		for (var name of paramNames) {
-			console.log(name);
 			tempParam = req.param(name);
 			if(tempParam === undefined) continue;
 			params[name] = tempParam;
