@@ -7,3 +7,5 @@ uploads/
 .project
 .settings
 /.tern-project
+/npm-debug.log
+.DS_Store
