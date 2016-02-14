@@ -23,6 +23,11 @@ body>.grid {
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script>
 	$(document).ready(function() {
+		$('#loginForm input').keyup(function(event) {
+			if (event.keyCode == 13) {
+				$('#loginForm').submit();
+			}
+		});
 		$('#loginSubmit').click(function() {
 			$('#loginForm').submit();
 		})
