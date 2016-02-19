@@ -5,9 +5,7 @@ var data = require('../data.js');
 var app = require('../app.js');
 var router = express.Router();
 router.get('/', function(req, res, next) {
-	res.render('index.html', {
-		title : 'Express'
-	});
+	res.redirect('/pages/companyInput.html')
 });
 router.get('/company_info_list', function(req, res, next) {
 
