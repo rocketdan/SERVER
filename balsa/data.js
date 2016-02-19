@@ -30,13 +30,14 @@ function handleDisconnect() {
 	});
 }
 handleDisconnect();
+exports.dbconn = connection;
 // select query 실행함수.
 // 콜백변수 err, 검색 결과.
 exports.selectQuery = function(query, callback) {
-	connection.query(query, function(err, rows) {
+	var sql = connection.query(query, function(err, rows) {
 		// console.log(rows);
 		if (typeof (callback) === "function") {
-			callback(err, rows);
+			callback(err, rows, sql.sql);
 		}
 	});
 };
@@ -51,36 +52,35 @@ exports.insertQuery = function(query, value, callback) {
 		}
 		if (typeof (callback) === "function") {
 			// if(result.)
-			callback(err, id);
+			callback(err, id, sql.sql);
 		}
 	});
-	console.log(sql.sql);
 };
 // update query 실행함수.
 // 콜백변수 err, 변경행수.
 exports.updateQuery = function(query, value, callback) {
-	connection.query(query, value, function(err, result) {
+	var sql = connection.query(query, value, function(err, result) {
 		console.log(result);
 		var change = 0;
 		if (!err && result.changedRows != undefined) {
 			change = result.changedRows;
 		}
 		if (typeof (callback) === "function") {
-			callback(err, change);
+			callback(err, change, sql.sql);
 		}
 	});
 };
 // delete query 실행함수.
 // 콜백변수 err, 삭제행수.
 exports.deleteQuery = function(query, callback) {
-	connection.query(query, function(err, result) {
+	var sql = connection.query(query, function(err, result) {
 		console.log(result);
 		var change = 0;
 		if (!err && result.affectedRows !== undefined) {
 			change = result.affectedRows;
 		}
 		if (typeof (callback) === "function") {
-			callback(err, change);
+			callback(err, change, sql.sql);
 		}
 	});
 };
