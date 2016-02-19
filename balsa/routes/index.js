@@ -72,7 +72,7 @@ router.post('/company_info_list/insert', function(req, res, next) {
 router.post('/company_info_list/delete', function(req, res, next) {
 	var id = req.param("id");
 	if (id != undefined && id.trim() != "") {
-		data.deleteQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change, query) {\
+		data.deleteQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change, query) {
 			app.logger.info(query);
 			var result = {
 				data : [],
