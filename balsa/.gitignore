@@ -6,6 +6,8 @@ uploads/
 .README.md.html
 .project
 .settings
-/.tern-project
-/npm-debug.log
+.tern-project
+npm-debug.log
+.DS_Store/logs/
 .DS_Store
+logs/

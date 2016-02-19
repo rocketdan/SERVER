@@ -2,6 +2,7 @@ var express = require('express');
 var uuid = require('uuid');
 var fs = require('fs');
 var data = require('../data.js');
+var app = require('../app.js');
 var router = express.Router();
 router.get('/', function(req, res, next) {
 	res.render('index.html', {
@@ -12,18 +13,17 @@ router.get('/company_info_list', function(req, res, next) {
 
 	var id = req.param("id");
 	var sql = 'select * from company_info';
-	console.log(id);
 	if (id != undefined && id != "") {
 		sql = sql + " where seq_id = " + data.escape(id);
 	}
-	console.log(sql);
-	data.selectQuery(sql, function(err, rows) {
+	data.selectQuery(sql, function(err, rows, query) {
+		app.logger.info(query);
 		var result = {
 			data : [],
 			error : null,
 		};
 		if (err) {
-			console.log(err);
+			app.logger.error(err);
 			result.error = err;
 		} else {
 			result.data = rows;
@@ -44,13 +44,14 @@ router.post('/company_info_list/insert', function(req, res, next) {
 
 	if (params.company_name != undefined && params.company_name.trim() != "") {
 		params['mod_date'] = params['reg_date'] = new Date();
-		data.insertQuery('insert into company_info set ?', params, function(err, id) {
+		data.insertQuery('insert into company_info set ?', params, function(err, id, query) {
+			app.logger.info(query);
 			var result = {
 				data : [],
 				error : null,
 			};
 			if (err) {
-				console.log(err);
+				app.logger.error(err);
 				result.error = err;
 			} else {
 				result.data = id;
@@ -62,6 +63,7 @@ router.post('/company_info_list/insert', function(req, res, next) {
 			data : [],
 			error : "can't find company_name"
 		};
+		app.logger.error(result);
 		res.send(result);
 	}
 
@@ -70,13 +72,14 @@ router.post('/company_info_list/insert', function(req, res, next) {
 router.post('/company_info_list/delete', function(req, res, next) {
 	var id = req.param("id");
 	if (id != undefined && id.trim() != "") {
-		data.deleteQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change) {
+		data.deleteQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change, query) {\
+			app.logger.info(query);
 			var result = {
 				data : [],
 				error : null,
 			};
 			if (err) {
-				console.log(err);
+				app.logger.error(err);
 				result.error = err;
 			} else {
 				result.data = change;
@@ -88,6 +91,7 @@ router.post('/company_info_list/delete', function(req, res, next) {
 			data : [],
 			error : "파라미터가 없습니다."
 		};
+		app.logger.error(result);
 		res.send(result);
 	}
 });
@@ -103,13 +107,14 @@ router.post('/company_info_list/update', function(req, res, next) {
 			params[name] = tempParam;
 		}
 		params['mod_date'] = new Date();
-		data.updateQuery('update company_info set ? where seq_id = ?', [ params, id ], function(err, change) {
+		data.updateQuery('update company_info set ? where seq_id = ?', [ params, id ], function(err, change, query) {
+			app.logger.info(query);
 			var result = {
 				data : [],
 				error : null,
 			};
 			if (err) {
-				console.log(err);
+				app.logger.error(err);
 				result.error = err;
 			} else {
 				result.data = change;
@@ -121,6 +126,7 @@ router.post('/company_info_list/update', function(req, res, next) {
 			data : [],
 			error : "파라미터가 없습니다."
 		};
+		app.logger.error(result);
 		res.send(result);
 	}
 });
@@ -244,7 +250,7 @@ router.post('/upload', function(req, res) {
 		}
 	});
 	form.on('progress', function(receivedBytes, expectedBytes) {
-		console.log(((receivedBytes / expectedBytes) * 100).toFixed(1) + '% received');
+		app.logger.info(((receivedBytes / expectedBytes) * 100).toFixed(1) + '% received');
 	});
 });
 module.exports = router;

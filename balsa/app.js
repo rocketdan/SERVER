@@ -2,6 +2,8 @@ var uuid = require('uuid');
 // 웹프레임웍
 var express = require('express');
 var path = require('path');
+// 파일 모듈.
+var fs = require('fs');
 // html 렌더 모듈
 var ejs = require('ejs');
 var favicon = require('serve-favicon');
@@ -14,7 +16,26 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 // 세션메모리관리 redis연동 모듈.
 var RedisStore = require('connect-redis')(session);
+// logging module
+var winston = require('winston'), transports = []; // https://github.com/winstonjs/winston
+var DailyRotateFile = require('winston-daily-rotate-file')
 
+transports.push(new DailyRotateFile({
+	name : 'file',
+	datePattern : '.yyyy-MM-dd',
+	filename : path.join(__dirname, "logs", "log_file.log")
+}));
+transports.push(new (winston.transports.Console)());
+
+var wins = new winston.Logger({
+	transports : transports
+});
+wins.stream = {
+	write : function(message, encoding) {
+		console.log(message)
+		wins.info(message);
+	}
+};
 var routes = require('./routes/index');
 var account = require('./routes/account');
 var login = require('./routes/login');
@@ -31,7 +52,9 @@ app.engine('html', ejs.renderFile);
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', '/img/white-image.png')));
-app.use(logger('dev'));
+app.use(logger('combined', {
+	stream : wins.stream
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -54,7 +77,7 @@ app.use(session({
 	},
 	secret : 'na-ong',
 	cookie : {
-		maxAge : 60000
+		maxAge : 360000
 	},
 	resave : true,
 	saveUninitialized : true
@@ -96,8 +119,9 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
 	app.use(function(err, req, res, next) {
 		res.status(err.status || 500);
+		wins.error(err.message);
 		res.render('error', {
-			message : err.message,
+			message : '',
 			error : err
 		});
 	});
@@ -106,12 +130,37 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-	console.log(err);
+	wins.error(err.message);
 	res.status(err.status || 500);
 	res.render('error', {
-		message : err.message,
+		message : '',
 		error : {}
 	});
 });
+//초기 필요한 폴더 생성.
+function init() {
+	fs.mkdir(path.join(__dirname, 'logs'), function(err) {
+		if (err) {
+			throw err;
+		}
+	});	
+	fs.mkdir(path.join(__dirname, 'uploads'), function(err) {
+		if (err) {
+			throw err;
+		}
+	});
+	fs.mkdir(path.join(__dirname, 'public', 'uploadimage'), function(err) {
+		if (err) {
+			throw err;
+		}
+	});
+}
+init();
+process.on('uncaughtException',function(err){
+	//죽기 방지용 루틴.
+	wins.error(err);
+})
+//로깅용 변수.
+exports.logger = wins;
 exports.store = store;
 module.exports = app;
