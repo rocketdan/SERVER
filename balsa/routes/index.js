@@ -25,7 +25,6 @@ router.get('/company_info_list', function(req, res, next) {
 	var id = req.query.id;
 	var page = req.query.page;
 	var count = req.query.count;
-	console.log(req);
 	var sql = queryList.company_info_list;
 	if (id != undefined && id != "") {
 		sql = sql + " where seq_id = " + data.escape(id);
