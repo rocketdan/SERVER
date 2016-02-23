@@ -3,17 +3,47 @@ var uuid = require('uuid');
 var fs = require('fs');
 var data = require('../data.js');
 var app = require('../app.js');
+var dbconn = data.dbconn;
 var router = express.Router();
 router.get('/', function(req, res, next) {
 	res.redirect('/pages/companyInput.html')
 });
+var queryList = {
+	"company_info_list":"select * from company_info",
+	"company_info_list_count":"select count(*) as count from company_info",
+	"company_info_insert":"insert into company_info set ?",
+	"company_account_insert":"insert into company_account set ?",
+	"company_info_delete":"delete from company_info where seq_id = ?",
+	"company_info_update":"update company_info set ? where seq_id = ?",
+	"company_account_delete":"delete from company_account where company_id = ?"
+}
+var paramList ={
+	"company_info":[ "company_name", "sub_id", "ceo_name", "company_num", "company2_num", "tour_num", "sub_num", "type", "company_reg_date", "tel_num", "tel2_num", "fax_num", "fax2_num", "post_address", "address", "work_location" ],
+	"company_account":["company_id","bank_name","account_num","account_auth","note"]
+} 
 router.get('/company_info_list', function(req, res, next) {
-
-	var id = req.param("id");
-	var sql = 'select * from company_info';
+	var id = req.query.id;
+	var page = req.query.page;
+	var count = req.query.count;
+	console.log(req);
+	var sql = queryList.company_info_list;
 	if (id != undefined && id != "") {
 		sql = sql + " where seq_id = " + data.escape(id);
+	} else if(page != undefined && page != ""){
+		var viewNum = req.body["viewNum"];
+		viewNum = Number(viewNum);
+		page = Number(page); 
+		if(!isNaN(page) && page != 0){
+			if(isNaN(viewNum) || viewNum ==0){
+				viewNum = 10;
+			} 
+			var start = (page - 1) * viewNum;
+			sql = sql + " limit " + start +","+ viewNum;
+		}
+	} else if(count != undefined && count == "true"){
+		sql = queryList.company_info_list_count;
 	}
+	console.log(count)
 	data.selectQuery(sql, function(err, rows, query) {
 		app.logger.info(query);
 		var result = {
@@ -29,49 +59,117 @@ router.get('/company_info_list', function(req, res, next) {
 		res.send(result);
 	});
 });
-router.post('/company_info_list/insert', function(req, res, next) {
+function rollback(err,res,dbconn){
+	app.logger.error(err);
+	dbconn.rollback(function() {
+		var result = {
+			data : [],
+			error : err,
+		};
+		res.send(result);
+	});
+}
+function getAccountParams(data){
+	// 계좌정보 파라미터 만드는 루틴.
+	var datas=[];
+	if(data!==undefined){
+		var tempAccountData=[];
+		try{
+			tempAccountData = JSON.parse(data);
+			for(var i=0;i<tempAccountData.length;i++){
+				var tempParams={};
+				for (var name of paramList.company_account) {
+					tempParams[name] = tempAccountData[i][name];
+					if(tempParams[name] === undefined) continue;
+				}
+				if(Object.keys(tempParams).length>0){
+				
+					datas.push(tempParams);
+				}
+			}
+		}catch(err){
+			console.log(err);
+			tempAccountData = [];
+		}
+	}
+	return datas;
+}
+function getCompanyParams(data){
 	var params = {};
-	var tempParam = null;
-	var paramNames = [ "company_name", "sub_id", "ceo_name", "company_num", "company2_num", "tour_num", "sub_num", "type", "company_reg_date", "tel_num", "tel2_num", "fax_num", "fax2_num", "post_address", "address", "work_location" ];
-
-	for (var name of paramNames) {
-		tempParam = req.param(name);
+	for (var name of paramList.company_info) {
+		var tempParam = data[name];
 		if(tempParam === undefined) continue;
 		params[name] = tempParam;
 	}
-
+	return params;
+}
+// 키값중복 될때 루틴 추가 필요.
+router.post('/company_info_list/insert', function(req, res, next) {
+	var result = {
+		data : [],
+		error : null,
+	};
+	var params = {};
+	var accountData=[];
+	accountData = getAccountParams(req.body.accounts);
+	// 컴페니인페니 파라미터 만드는 루틴.
+	params = getCompanyParams(req.body);
 	if (params.company_name != undefined && params.company_name.trim() != "") {
 		params['mod_date'] = params['reg_date'] = new Date();
-		data.insertQuery('insert into company_info set ?', params, function(err, id, query) {
-			app.logger.info(query);
-			var result = {
-				data : [],
-				error : null,
-			};
-			if (err) {
+		// 트렌젝션 시작부분.
+		dbconn.beginTransaction(function(err) {
+			if (err) {// if err
 				app.logger.error(err);
-				result.error = err;
-			} else {
-				result.data = id;
-			}
-			res.send(result);
+				result.error = err
+				res.send(result);
+			} else{
+				// 회사정보 입력
+				dbconn.query(queryList.company_info_insert, params, function(err, dbresult) {
+					if (err) {
+						app.logger.error(err);
+						rollback(err,res,dbconn);
+					} else{
+						// 회사정보 입력성공하면 seq_id 받아옴.
+						var insertId = dbresult.insertId;
+						async.each(accountData,function(account,cb){
+							account.company_id = insertId;
+							// 계좌정보 저장.
+							dbconn.query(queryList.company_account_insert, account, function(err, dbresult) {
+								cb(err)
+							});
+						},function(err){
+							// 계좌정보 입력 시 실패하면 아래 루틴, 성공하면 커밋하고 끝.
+							if (err) {
+								app.logger.error(err);
+								rollback(err,res,dbconn);
+							} else{
+								dbconn.commit(function(err) {
+									if (err) {
+										app.logger.error(err);
+										rollback(err,dbconn);
+									}// if err
+									else{
+										result.data = insertId;
+										res.send(result);
+									}
+								});// commit
+							}
+						});
+					}
+				});
+			}	
 		});
 	} else {
-		var result = {
-			data : [],
-			error : "can't find company_name"
-		};
-		app.logger.error(result);
+		result.error = "can't find company_name"
+			app.logger.error(result);
 		res.send(result);
 	}
-
 });
 
 router.post('/company_info_list/delete', function(req, res, next) {
-	var id = req.param("id");
+	var id = req.body["id"];
 	if (id != undefined && id.trim() != "") {
-		data.deleteQuery("delete from company_info where seq_id = " + data.escape(id), function(err, change, query) {
-			app.logger.info(query);
+		data.deleteQuery(queryList.company_info_delete, id, function(err, change) {
 			var result = {
 				data : [],
 				error : null,
@@ -93,37 +191,69 @@ router.post('/company_info_list/delete', function(req, res, next) {
 		res.send(result);
 	}
 });
+// seq_id없을시 에러 처리 필요.
 router.post('/company_info_list/update', function(req, res, next) {
-	var id = req.param("id");
+	var id = req.body["id"];
+	var result = {
+		data : [],
+		error : ""
+	};
 	if (id != undefined && id.trim() != "") {
 		var params = {};
-		var tempParam = null;
-		var paramNames = [ "company_name", "sub_id", "ceo_name", "company_num", "company2_num", "tour_num", "sub_num", "type", "company_reg_date", "tel_num", "tel2_num", "fax_num", "fax2_num", "post_address", "address", "work_location" ];
-		for (var name of paramNames) {
-			tempParam = req.param(name);
-			if(tempParam === undefined) continue;
-			params[name] = tempParam;
-		}
+		var accountData=[];
+		accountData = getAccountParams(req.body.accounts);
+		// 컴페니인페니 파라미터 만드는 루틴.
+		params = getCompanyParams(req.body);
 		params['mod_date'] = new Date();
-		data.updateQuery('update company_info set ? where seq_id = ?', [ params, id ], function(err, change, query) {
-			app.logger.info(query);
-			var result = {
-				data : [],
-				error : null,
-			};
-			if (err) {
+		dbconn.beginTransaction(function(err) {
+			if (err) {// if err
 				app.logger.error(err);
-				result.error = err;
-			} else {
-				result.data = change;
-			}
-			res.send(result);
+				result.error = err
+				res.send(result);
+			} else{
+				var sql = dbconn.query(queryList.company_info_update, [params, id], function(err, dbresult) {
+					if (err) {
+						app.logger.error(err);
+						rollback(err,res,dbconn);
+					} else{
+						var sql = dbconn.query(queryList.company_account_delete,id,function(err){
+							if (err) {
+								app.logger.error(err);
+								rollback(err,res,dbconn);
+							} else{
+								async.each(accountData,function(account,cb){
+									account.company_id = id;
+									var sql=dbconn.query(queryList.company_account_insert, account, function(err, dbresult) {
+										cb(err)
+									});
+									app.logger.info(sql.sql);
+								},function(err){
+									if (err) {
+										app.logger.error(err);
+										rollback(err,res,dbconn);
+									} else{
+										dbconn.commit(function(err) {
+											if (err) {
+												app.logger.error(err);
+												rollback(err,dbconn);
+											}// if err
+											else{
+												result.data = id;
+												res.send(result);
+											}
+										});// commit
+									}
+								});
+							}
+						});
+						app.logger.info(sql.sql);
+					}
+				});
+				app.logger.info(sql.sql);
+			}	
 		});
 	} else {
-		var result = {
-			data : [],
-			error : "파라미터가 없습니다."
-		};
+		result.error = "파라미터가 없습니다.";
 		app.logger.error(result);
 		res.send(result);
 	}
@@ -187,6 +317,7 @@ router.post('/upload', function(req, res) {
 			}, function(err) {
 				// 최종 처리 콜백 함
 				if (err) {
+					app.logger.error(err);
 					err.status(500);
 					next(err);
 				} // 에러가 아니면 성공여부 전달
@@ -206,6 +337,7 @@ router.post('/upload', function(req, res) {
 				// 파일 선택하지 않았을 경우 업로드 과정에서 생긴 크기가 0인 파일을 삭제한다.
 				fstools.remove(files.uploaddata.path, function(err) {
 					if (err) {
+						app.logger.error(err);
 						err.status(500);
 						next(err);
 					} else {
@@ -229,6 +361,7 @@ router.post('/upload', function(req, res) {
 				// 임시 폴더에 저장된 이미지 파일을 이미지 경로로 이동시킨다.
 				fstools.move(files.uploaddata.path, destPath, function(err) {
 					if (err) {
+						app.logger.error(err);
 						err.status(500);
 						next(err);
 					} else {

@@ -72,8 +72,8 @@ exports.updateQuery = function(query, value, callback) {
 };
 // delete query 실행함수.
 // 콜백변수 err, 삭제행수.
-exports.deleteQuery = function(query, callback) {
-	var sql = connection.query(query, function(err, result) {
+exports.deleteQuery = function(query, value, callback) {
+	var sql = connection.query(query, value, function(err, result) {
 		console.log(result);
 		var change = 0;
 		if (!err && result.affectedRows !== undefined) {
