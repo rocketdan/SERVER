@@ -20,8 +20,8 @@ router.all('/login.page', function(req, res, next) {
 	} else {
 		// 포스트로 데이터 넘어 오면 로그인 작업을 함.
 		if (req.method == "POST") {
-			var id = req.param('id');
-			var pw = req.param('pw');
+			var id = req.body['id'];
+			var pw = req.body['pw'];
 			console.log(id, pw);
 			// 아이디 패스워드 두개 존재 할때만 쿼리함.
 			if (id !== undefined && pw !== undefined) {
