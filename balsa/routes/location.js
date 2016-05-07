@@ -8,8 +8,17 @@ var nationQueries = {
 	"delete": "delete from nation_info where seq_id = ?"
 };
 var nationParams = {
-	post: ["nation_name", "nation_code", "reg_date"],
-	put: ["nation_name", "nation_code", "mod_date"]
+	"post": ["nation_name", "nation_code", "reg_date"],
+	"put": ["nation_name", "nation_code", "mod_date"]
+}
+var regionQueries = {
+	"post": "insert region_info set ?",
+	"put": "update region_info set ? where seq_id = ?",
+	"delete": "delete from region_info where seq_id = ?"
+}
+var regionParams = {
+	"post": ["nation_id", "region_code", "region_name", "land_erp_use", "land_report_use", "tour_erp_use", "tour_report_use", "reg_date"],
+	"put": ["region_name", "land_erp_use", "land_report_use", "tour_erp_use", "tour_report_use", "mod_date"]
 }
 
 function getParams(data, params) {
@@ -26,20 +35,6 @@ function getParams(data, params) {
 		return {};
 	}
 };
-router.post('/nations', function(req, res, next) {
-	var params = getParams(req.body, nationParams.post);
-	app.logger.info(nationQueries.post);
-	params.reg_date = new Date();
-	app.logger.info(params);
-	app.db.query(nationQueries.post, params, function(err, rows) {
-		if(err) {
-			app.logger.error(err);
-			res.status(500).send(err);
-		} else {
-			res.send(rows)
-		}
-	});
-});
 router.get('/nations', function(req, res, next) {
 	app.logger.info(nationQueries.get);
 	app.db.query(nationQueries.get, function(err, rows) {
@@ -51,34 +46,117 @@ router.get('/nations', function(req, res, next) {
 		}
 	});
 });
-router.put('/nations', function(req, res, next) {
-	console.log(req.body);
-	var params = {};
-	params = getParams(req.body, nationParams.put);
-	var id = req.body.id;
-	params.mod_date = new Date();
-	app.logger.info(nationQueries.put);
-	app.logger.info(params);
-	app.db.query(nationQueries.put, [params, id], function(err, rows) {
-		if(err) {
-			app.logger.error(err);
-			res.status(500).send(err);
-		} else {
-			res.send(rows)
-		}
-	});
+router.all('/nation', function(req, res, next) {
+	var params = [];
+	var query = "";
+	switch(req.method) {
+		case "GET":
+			query = nationQueries.get + " where seq_id  = ?";
+			params.push(req.query.id);
+			break;
+		case "POST":
+			params.push(getParams(req.body, nationParams.post));
+			params[0].reg_date = new Date();
+			query = nationQueries.post;
+			break;
+		case "PULL":
+			params.push(getParams(req.body, nationParams.put));
+			params[0].mod_date = new Date();
+			query = nationQueries.pull;
+			params.push(req.body.id);
+			break;
+		case "DELETE":
+			query = nationQueries.delete;
+			params.push(req.body.id);
+			break;
+	}
+	if(query != "") {
+		app.db.query(query, params, function(err, rows) {
+			app.logger.info(this.sql);
+			app.logger.info(this.values);
+			if(err) {
+				app.logger.error(err);
+				res.status(500).send(err);
+			} else {
+				res.send(rows)
+			}
+		});
+	} else {
+		next();
+	}
 });
-router.delete('/nations', function(req, res, next) {
-	var params = req.body.id;
-	app.logger.info(nationQueries.delete);
-	app.logger.info(params);
-	app.db.query(nationQueries.delete, params, function(err, rows) {
-		if(err) {
-			app.logger.error(err);
-			res.status(500).send(err);
-		} else {
-			res.send(rows)
-		}
-	});
+router.all('/region', function(req, res, next) {
+	var params = [];
+	var query = "";
+	switch(req.method) {
+		case "POST":
+			params.push(getParams(req.body, regionParams.post));
+			params[0].reg_date = new Date();
+			query = regionQueries.post;
+			break;
+		case "PULL":
+			params.push(getParams(req.body, regionParams.put));
+			params[0].mod_date = new Date();
+			query = regionQueries.pull;
+			params.push(req.body.id);
+			break;
+		case "DELETE":
+			query = regionQueries.delete;
+			params.push(req.body.id);
+			break;
+	}
+	if(query != "") {
+		app.db.query(query, params, function(err, rows) {
+			app.logger.info(this.sql);
+			app.logger.info(this.values);
+			if(err) {
+				app.logger.error(err);
+				res.status(500).send(err);
+			} else {
+				res.send(rows)
+			}
+		});
+	} else {
+		next();
+	}
+});
+router.all('/nations/regions', function(req, res, next) {
+	if(req.method == 'GET') {
+		app.db.query(nationQueries.get, function(err, rows) {
+			if(err) {
+				app.logger.error(err);
+				res.status(500).send(err);
+			} else {
+				var nations = {};
+				if(rows.length > 0) {
+					for(var nation of rows) {
+						var id = nation.seq_id;
+						delete(nation.seq_id);
+						nation.region = [];
+						nations[id] = nation;
+					}
+					app.db.query(regionQueries.get, function(err, rows) {
+						if(err) {
+							app.logger.error(err);
+							res.status(500).send(err);
+						} else {
+							for(var region of rows) {
+								var id = region.nation_id;
+								if(nations[id] != undefined) {
+									delete(region.nation_id);
+									nations[id]['region'].push(region);
+								}
+							}
+							res.send(nations);
+						}
+					});
+				} else {
+					res.send({});
+				}
+			}
+		});
+	} else {
+		res.status(500).send();
+	}
 });
 module.exports = router;
